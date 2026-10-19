@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POS API Docs</title>
+  <style>
+    :root {
+      --bg: #f4f8fb;
+      --card: #ffffff;
+      --text: #17212b;
+      --muted: #5e6a75;
+      --line: #dbe4ea;
+      --brand: #0b6a88;
+      --ok: #1f7a1f;
+      --warn: #b35a00;
+      --danger: #9f1f1f;
+      --neutral: #4b5563;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at top right, #d9eef8, var(--bg) 48%);
+      color: var(--text);
+    }
+    .wrap { width: min(1180px, 94vw); margin: 28px auto; }
+    .hero, .panel { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; box-shadow: 0 8px 26px rgba(0,0,0,.06); }
+    .panel { margin-top: 14px; }
+    h1 { margin: 0 0 6px; font-size: 28px; }
+    h2 { margin: 0 0 10px; font-size: 20px; }
+    p { margin: 6px 0; }
+    .muted { color: var(--muted); }
+    .stats { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
+    .chip { border: 1px solid var(--line); border-radius: 999px; padding: 6px 11px; background: #f9fcff; font-size: 13px; }
+    .controls { display: grid; grid-template-columns: 1fr 170px 170px; gap: 10px; }
+    input, select { width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 10px; font-size: 14px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    th, td { text-align: left; border-bottom: 1px solid var(--line); padding: 9px 8px; font-size: 14px; }
+    th { background: #f7fafc; }
+    .badge { border-radius: 6px; color: #fff; font-weight: 700; font-size: 11px; padding: 2px 8px; display: inline-block; min-width: 58px; text-align: center; }
+    .GET { background: var(--ok); }
+    .POST { background: var(--brand); }
+    .PUT { background: var(--warn); }
+    .DELETE { background: var(--danger); }
+    .ANY { background: var(--neutral); }
+    .path { font-family: Consolas, Monaco, "Courier New", monospace; font-size: 13px; }
+    .note { border-left: 4px solid #f59e0b; background: #fff9ee; padding: 10px 12px; border-radius: 8px; }
+    @media (max-width: 900px) {
+      .controls { grid-template-columns: 1fr; }
+      th:nth-child(1), td:nth-child(1) { width: 68px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>POS API Documentation</h1>
+      <p class="muted">Unified docs page for v2 and v3 endpoints.</p>
+      <div class="stats">
+        <span class="chip">v2 source: application/config/routes.php</span>
+        <span class="chip">v3 source: inferred from controller REST methods</span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Important Note</h2>
+      <div class="note">
+        There are no explicit api/v3 route entries in application/config/routes.php right now. v3 entries shown here are inferred from method names and may need explicit route mapping for production.
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Browse Endpoints</h2>
+      <div class="controls">
+        <input id="q" type="text" placeholder="Search by path, group, method, version...">
+        <select id="version">
+          <option value="ALL">All Versions</option>
+          <option value="v2">v2</option>
+          <option value="v3">v3</option>
+        </select>
+        <select id="method">
+          <option value="ALL">All Methods</option>
+          <option value="GET">GET</option>
+          <option value="POST">POST</option>
+          <option value="PUT">PUT</option>
+          <option value="DELETE">DELETE</option>
+          <option value="ANY">ANY</option>
+        </select>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Path</th>
+            <th>Version</th>
+            <th>Group</th>
+          </tr>
+        </thead>
+        <tbody id="rows">
+          <tr data-method="ANY" data-version="v2" data-group="areas"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/areas</td><td>v2</td><td>areas</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="areas"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/areas/(:num)</td><td>v2</td><td>areas</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="auth"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/auth/login</td><td>v2</td><td>auth</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="counters"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/counters</td><td>v2</td><td>counters</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="counters"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/counters/(:num)</td><td>v2</td><td>counters</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="currencies"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/currencies</td><td>v2</td><td>currencies</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="currencies"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/currencies/(:num)</td><td>v2</td><td>currencies</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="customer_due_receives"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/customer_due_receives</td><td>v2</td><td>customer_due_receives</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="customer_due_receives"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/customer_due_receives/(:num)</td><td>v2</td><td>customer_due_receives</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="customers"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/customers</td><td>v2</td><td>customers</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="customers"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/customers/(:num)</td><td>v2</td><td>customers</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="dashboard"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/dashboard</td><td>v2</td><td>dashboard</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="delivery_partners"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/delivery_partners</td><td>v2</td><td>delivery_partners</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="delivery_partners"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/delivery_partners/(:num)</td><td>v2</td><td>delivery_partners</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="denominations"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/denominations</td><td>v2</td><td>denominations</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="denominations"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/denominations/(:num)</td><td>v2</td><td>denominations</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="expense_items"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/expense_items</td><td>v2</td><td>expense_items</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="expense_items"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/expense_items/(:any)</td><td>v2</td><td>expense_items</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="expenses"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/expenses</td><td>v2</td><td>expenses</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="expenses"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/expenses/(:num)</td><td>v2</td><td>expenses</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="food_menu_categories"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/food_menu_categories</td><td>v2</td><td>food_menu_categories</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="food_menu_categories"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/food_menu_categories/(:num)</td><td>v2</td><td>food_menu_categories</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="food_menus"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/food_menus</td><td>v2</td><td>food_menus</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="food_menus"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/food_menus/(:num)</td><td>v2</td><td>food_menus</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="holds"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/holds</td><td>v2</td><td>holds</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="holds"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/holds/(:num)</td><td>v2</td><td>holds</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="ingredient_categories"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/ingredient_categories</td><td>v2</td><td>ingredient_categories</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="ingredient_categories"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/ingredient_categories/(:num)</td><td>v2</td><td>ingredient_categories</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="ingredients"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/ingredients</td><td>v2</td><td>ingredients</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="ingredients"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/ingredients/(:num)</td><td>v2</td><td>ingredients</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="inventory_adjustments"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/inventory_adjustments</td><td>v2</td><td>inventory_adjustments</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="inventory_adjustments"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/inventory_adjustments/(:num)</td><td>v2</td><td>inventory_adjustments</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="kitchens"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/kitchens</td><td>v2</td><td>kitchens</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="kitchens"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/kitchens/categories/(:num)</td><td>v2</td><td>kitchens</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="kitchens"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/kitchens/(:num)</td><td>v2</td><td>kitchens</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="modifiers"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/modifiers</td><td>v2</td><td>modifiers</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="modifiers"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/modifiers/(:num)</td><td>v2</td><td>modifiers</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="outlets"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/outlets</td><td>v2</td><td>outlets</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="outlets"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/outlets/(:num)</td><td>v2</td><td>outlets</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="payment_methods"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/payment_methods</td><td>v2</td><td>payment_methods</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="payment_methods"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/payment_methods/(:num)</td><td>v2</td><td>payment_methods</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="premade_foods"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/premade_foods</td><td>v2</td><td>premade_foods</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="premade_foods"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/premade_foods/(:num)</td><td>v2</td><td>premade_foods</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="printers"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/printers</td><td>v2</td><td>printers</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="printers"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/printers/(:num)</td><td>v2</td><td>printers</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="productions"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/productions</td><td>v2</td><td>productions</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="productions"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/productions/(:num)</td><td>v2</td><td>productions</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="promotions"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/promotions</td><td>v2</td><td>promotions</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="promotions"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/promotions/(:num)</td><td>v2</td><td>promotions</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="purchases"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/purchases</td><td>v2</td><td>purchases</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="purchases"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/purchases/(:num)</td><td>v2</td><td>purchases</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="register"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/register/close</td><td>v2</td><td>register</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="register"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/register/details</td><td>v2</td><td>register</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="register"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/register/open</td><td>v2</td><td>register</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/attendance</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/audit_log</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/consumption</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/customer_due</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/customer_ledger</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/customer_report</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/daily_summary</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/detailed_purchases</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/detailed_sales</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/expense</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/food_menu_sales</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/full_dashboard</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/inventory</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/kitchen_performance</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/low_stock</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/loyalty_points_available</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/loyalty_points_usage</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/product_analysis</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/production</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/profit_loss</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/purchases</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/purchases_by_ingredient</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/register</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/sales_by_waiter</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/sales_summary_by_date</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/sales_summary_by_month</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/supplier_due</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/supplier_ledger</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/tips</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/transfers</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/vat</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/waste</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reports"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reports/z_report</td><td>v2</td><td>reports</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reservations"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reservations</td><td>v2</td><td>reservations</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="reservations"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/reservations/(:num)</td><td>v2</td><td>reservations</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="roles"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/roles</td><td>v2</td><td>roles</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="roles"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/roles/(:num)</td><td>v2</td><td>roles</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="roles"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/roles/permissions</td><td>v2</td><td>roles</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="sales"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/sales</td><td>v2</td><td>sales</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="sales"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/sales/details/(:num)</td><td>v2</td><td>sales</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="sales"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/sales/(:num)</td><td>v2</td><td>sales</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="sales"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/sales/running_details/(:num)</td><td>v2</td><td>sales</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="service"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/service/companies</td><td>v2</td><td>service</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="service"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/service/companies/(:num)</td><td>v2</td><td>service</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="supplier_payments"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/supplier_payments</td><td>v2</td><td>supplier_payments</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="supplier_payments"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/supplier_payments/(:num)</td><td>v2</td><td>supplier_payments</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="suppliers"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/suppliers</td><td>v2</td><td>suppliers</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="suppliers"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/suppliers/(:num)</td><td>v2</td><td>suppliers</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="tables"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/tables</td><td>v2</td><td>tables</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="tables"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/tables/(:num)</td><td>v2</td><td>tables</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="transfers"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/transfers</td><td>v2</td><td>transfers</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="transfers"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/transfers/(:num)</td><td>v2</td><td>transfers</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="units"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/units</td><td>v2</td><td>units</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="units"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/units/(:num)</td><td>v2</td><td>units</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="users"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/users</td><td>v2</td><td>users</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="users"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/users/(:num)</td><td>v2</td><td>users</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="wastes"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/wastes</td><td>v2</td><td>wastes</td></tr>
+          <tr data-method="ANY" data-version="v2" data-group="wastes"><td><span class="badge ANY">ANY</span></td><td class="path">/api/v2/wastes/(:num)</td><td>v2</td><td>wastes</td></tr>
+          <tr data-method="DELETE" data-version="v2" data-group="attendance"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v2/attendance/(:num)</td><td>v2</td><td>attendance</td></tr>
+          <tr data-method="DELETE" data-version="v2" data-group="service"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v2/service/payments/(:num)</td><td>v2</td><td>service</td></tr>
+          <tr data-method="DELETE" data-version="v2" data-group="service"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v2/service/pricing_plans/(:num)</td><td>v2</td><td>service</td></tr>
+          <tr data-method="GET" data-version="v2" data-group="attendance"><td><span class="badge GET">GET</span></td><td class="path">/api/v2/attendance</td><td>v2</td><td>attendance</td></tr>
+          <tr data-method="GET" data-version="v2" data-group="attendance"><td><span class="badge GET">GET</span></td><td class="path">/api/v2/attendance/status</td><td>v2</td><td>attendance</td></tr>
+          <tr data-method="GET" data-version="v2" data-group="auth"><td><span class="badge GET">GET</span></td><td class="path">/api/v2/auth/pricing_plans</td><td>v2</td><td>auth</td></tr>
+          <tr data-method="GET" data-version="v2" data-group="auth"><td><span class="badge GET">GET</span></td><td class="path">/api/v2/auth/pricing_plans/(:num)</td><td>v2</td><td>auth</td></tr>
+          <tr data-method="GET" data-version="v2" data-group="customers"><td><span class="badge GET">GET</span></td><td class="path">/api/v2/customers/due/(:num)</td><td>v2</td><td>customers</td></tr>
+          <tr data-method="GET" data-version="v2" data-group="kitchen"><td><span class="badge GET">GET</span></td><td class="path">/api/v2/kitchen/orders/(:num)</td><td>v2</td><td>kitchen</td></tr>
+          <tr data-method="GET" data-version="v2" data-group="orders"><td><span class="badge GET">GET</span></td><td class="path">/api/v2/orders/my_orders</td><td>v2</td><td>orders</td></tr>
+          <tr data-method="GET" data-version="v2" data-group="orders"><td><span class="badge GET">GET</span></td><td class="path">/api/v2/orders/profile_stats</td><td>v2</td><td>orders</td></tr>
+          <tr data-method="GET" data-version="v2" data-group="profile"><td><span class="badge GET">GET</span></td><td class="path">/api/v2/profile</td><td>v2</td><td>profile</td></tr>
+          <tr data-method="GET" data-version="v2" data-group="public"><td><span class="badge GET">GET</span></td><td class="path">/api/v2/public/categories/(:num)</td><td>v2</td><td>public</td></tr>
+          <tr data-method="GET" data-version="v2" data-group="public"><td><span class="badge GET">GET</span></td><td class="path">/api/v2/public/menu/(:num)</td><td>v2</td><td>public</td></tr>
+          <tr data-method="GET" data-version="v2" data-group="public"><td><span class="badge GET">GET</span></td><td class="path">/api/v2/public/outlets</td><td>v2</td><td>public</td></tr>
+          <tr data-method="GET" data-version="v2" data-group="service"><td><span class="badge GET">GET</span></td><td class="path">/api/v2/service/companies/(:num)/outlets</td><td>v2</td><td>service</td></tr>
+          <tr data-method="GET" data-version="v2" data-group="service"><td><span class="badge GET">GET</span></td><td class="path">/api/v2/service/payments</td><td>v2</td><td>service</td></tr>
+          <tr data-method="GET" data-version="v2" data-group="service"><td><span class="badge GET">GET</span></td><td class="path">/api/v2/service/settings/(:any)</td><td>v2</td><td>service</td></tr>
+          <tr data-method="GET" data-version="v2" data-group="settings"><td><span class="badge GET">GET</span></td><td class="path">/api/v2/settings/currency</td><td>v2</td><td>settings</td></tr>
+          <tr data-method="GET" data-version="v2" data-group="settings"><td><span class="badge GET">GET</span></td><td class="path">/api/v2/settings/tax</td><td>v2</td><td>settings</td></tr>
+          <tr data-method="GET" data-version="v2" data-group="suppliers"><td><span class="badge GET">GET</span></td><td class="path">/api/v2/suppliers/due/(:num)</td><td>v2</td><td>suppliers</td></tr>
+          <tr data-method="GET" data-version="v2" data-group="waiter"><td><span class="badge GET">GET</span></td><td class="path">/api/v2/waiter/new_orders</td><td>v2</td><td>waiter</td></tr>
+          <tr data-method="GET" data-version="v2" data-group="waiter"><td><span class="badge GET">GET</span></td><td class="path">/api/v2/waiter/notifications</td><td>v2</td><td>waiter</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="attendance"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/attendance</td><td>v2</td><td>attendance</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="attendance"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/attendance/check_in</td><td>v2</td><td>attendance</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="attendance"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/attendance/check_out</td><td>v2</td><td>attendance</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="auth"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/auth/confirm_payment</td><td>v2</td><td>auth</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="auth"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/auth/customer_register</td><td>v2</td><td>auth</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="auth"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/auth/forgot_password_final</td><td>v2</td><td>auth</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="auth"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/auth/forgot_password_step1</td><td>v2</td><td>auth</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="auth"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/auth/forgot_password_step2</td><td>v2</td><td>auth</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="auth"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/auth/login_pin</td><td>v2</td><td>auth</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="auth"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/auth/regenerate_payment_link</td><td>v2</td><td>auth</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="auth"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/auth/register</td><td>v2</td><td>auth</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="holds"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/holds/finalize/(:num)</td><td>v2</td><td>holds</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="kitchen"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/kitchen/update_status</td><td>v2</td><td>kitchen</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="orders"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/orders/place_order</td><td>v2</td><td>orders</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="profile"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/profile/change_password</td><td>v2</td><td>profile</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="profile"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/profile/change_pin</td><td>v2</td><td>profile</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="profile"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/profile/security_question</td><td>v2</td><td>profile</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="promotions"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/promotions/check_conflict</td><td>v2</td><td>promotions</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="sales"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/sales/merge</td><td>v2</td><td>sales</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="sales"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/sales/refund/(:num)</td><td>v2</td><td>sales</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="sales"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/sales/split/(:num)</td><td>v2</td><td>sales</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="service"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/service/companies/(:num)/block</td><td>v2</td><td>service</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="service"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/service/companies/(:num)/unblock</td><td>v2</td><td>service</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="service"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/service/payments/manual</td><td>v2</td><td>service</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="service"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/service/pricing_plans</td><td>v2</td><td>service</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="service"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/service/settings/site</td><td>v2</td><td>service</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="waiter"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/waiter/notifications/mark_as_viewed</td><td>v2</td><td>waiter</td></tr>
+          <tr data-method="POST" data-version="v2" data-group="waiter"><td><span class="badge POST">POST</span></td><td class="path">/api/v2/waiter/order_details</td><td>v2</td><td>waiter</td></tr>
+          <tr data-method="PUT" data-version="v2" data-group="attendance"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v2/attendance/(:num)</td><td>v2</td><td>attendance</td></tr>
+          <tr data-method="PUT" data-version="v2" data-group="profile"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v2/profile</td><td>v2</td><td>profile</td></tr>
+          <tr data-method="PUT" data-version="v2" data-group="sales"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v2/sales/change_date/(:num)</td><td>v2</td><td>sales</td></tr>
+          <tr data-method="PUT" data-version="v2" data-group="sales"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v2/sales/change_delivery_status/(:num)</td><td>v2</td><td>sales</td></tr>
+          <tr data-method="PUT" data-version="v2" data-group="sales"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v2/sales/transfer/(:num)</td><td>v2</td><td>sales</td></tr>
+          <tr data-method="PUT" data-version="v2" data-group="service"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v2/service/pricing_plans/(:num)</td><td>v2</td><td>service</td></tr>
+          <tr data-method="PUT" data-version="v2" data-group="service"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v2/service/settings/(:any)</td><td>v2</td><td>service</td></tr>
+          <tr data-method="PUT" data-version="v2" data-group="settings"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v2/settings/tax</td><td>v2</td><td>settings</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="areas"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/areas</td><td>v3</td><td>areas</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="attendance"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/attendance</td><td>v3</td><td>attendance</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="counters"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/counters</td><td>v3</td><td>counters</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="currencies"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/currencies</td><td>v3</td><td>currencies</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="customer_due_receives"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/customer_due_receives</td><td>v3</td><td>customer_due_receives</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="customers"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/customers</td><td>v3</td><td>customers</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="delivery_partners"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/delivery_partners</td><td>v3</td><td>delivery_partners</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="denominations"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/denominations</td><td>v3</td><td>denominations</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="expense_items"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/expense_items</td><td>v3</td><td>expense_items</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="expenses"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/expenses</td><td>v3</td><td>expenses</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="food_menu_categories"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/food_menu_categories</td><td>v3</td><td>food_menu_categories</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="food_menus"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/food_menus</td><td>v3</td><td>food_menus</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="holds"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/holds</td><td>v3</td><td>holds</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="ingredient_categories"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/ingredient_categories</td><td>v3</td><td>ingredient_categories</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="ingredients"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/ingredients</td><td>v3</td><td>ingredients</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="inventory_adjustments"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/inventory_adjustments</td><td>v3</td><td>inventory_adjustments</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="kitchens"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/kitchens</td><td>v3</td><td>kitchens</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="modifiers"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/modifiers</td><td>v3</td><td>modifiers</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="outlets"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/outlets</td><td>v3</td><td>outlets</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="payment_methods"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/payment_methods</td><td>v3</td><td>payment_methods</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="premade_foods"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/premade_foods</td><td>v3</td><td>premade_foods</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="printers"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/printers</td><td>v3</td><td>printers</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="productions"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/productions</td><td>v3</td><td>productions</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="promotions"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/promotions</td><td>v3</td><td>promotions</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="purchases"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/purchases</td><td>v3</td><td>purchases</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="reservations"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/reservations</td><td>v3</td><td>reservations</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="roles"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/roles</td><td>v3</td><td>roles</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="sales"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/sales</td><td>v3</td><td>sales</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="service"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/service/companies</td><td>v3</td><td>service</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="service"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/service/payments</td><td>v3</td><td>service</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="service"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/service/pricing_plans</td><td>v3</td><td>service</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="supplier_payments"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/supplier_payments</td><td>v3</td><td>supplier_payments</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="suppliers"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/suppliers</td><td>v3</td><td>suppliers</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="tables"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/tables</td><td>v3</td><td>tables</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="transfers"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/transfers</td><td>v3</td><td>transfers</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="units"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/units</td><td>v3</td><td>units</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="users"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/users</td><td>v3</td><td>users</td></tr>
+          <tr data-method="DELETE" data-version="v3" data-group="wastes"><td><span class="badge DELETE">DELETE</span></td><td class="path">/api/v3/wastes</td><td>v3</td><td>wastes</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="areas"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/areas</td><td>v3</td><td>areas</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="attendance"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/attendance</td><td>v3</td><td>attendance</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="attendance"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/attendance/status</td><td>v3</td><td>attendance</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="auth"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/auth/pricing_plans</td><td>v3</td><td>auth</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="counters"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/counters</td><td>v3</td><td>counters</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="currencies"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/currencies</td><td>v3</td><td>currencies</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="customer_due_receives"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/customer_due_receives</td><td>v3</td><td>customer_due_receives</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="customers"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/customers</td><td>v3</td><td>customers</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="customers"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/customers/get_due</td><td>v3</td><td>customers</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="delivery_partners"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/delivery_partners</td><td>v3</td><td>delivery_partners</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="denominations"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/denominations</td><td>v3</td><td>denominations</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="expense_items"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/expense_items</td><td>v3</td><td>expense_items</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="expenses"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/expenses</td><td>v3</td><td>expenses</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="food_menu_categories"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/food_menu_categories</td><td>v3</td><td>food_menu_categories</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="food_menus"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/food_menus</td><td>v3</td><td>food_menus</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="holds"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/holds</td><td>v3</td><td>holds</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="ingredient_categories"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/ingredient_categories</td><td>v3</td><td>ingredient_categories</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="ingredients"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/ingredients</td><td>v3</td><td>ingredients</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="inventory_adjustments"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/inventory_adjustments</td><td>v3</td><td>inventory_adjustments</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="kitchen"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/kitchen/orders</td><td>v3</td><td>kitchen</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="kitchens"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/kitchens</td><td>v3</td><td>kitchens</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="kitchens"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/kitchens/categories</td><td>v3</td><td>kitchens</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="modifiers"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/modifiers</td><td>v3</td><td>modifiers</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="orders"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/orders/my_orders</td><td>v3</td><td>orders</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="orders"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/orders/profile_stats</td><td>v3</td><td>orders</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="outlets"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/outlets</td><td>v3</td><td>outlets</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="payment_methods"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/payment_methods</td><td>v3</td><td>payment_methods</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="premade_foods"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/premade_foods</td><td>v3</td><td>premade_foods</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="printers"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/printers</td><td>v3</td><td>printers</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="productions"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/productions</td><td>v3</td><td>productions</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="profile"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/profile</td><td>v3</td><td>profile</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="promotions"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/promotions</td><td>v3</td><td>promotions</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="publicapi"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/publicapi/categories</td><td>v3</td><td>publicapi</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="publicapi"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/publicapi/menu</td><td>v3</td><td>publicapi</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="publicapi"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/publicapi/outlets</td><td>v3</td><td>publicapi</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="purchases"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/purchases</td><td>v3</td><td>purchases</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="register"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/register/details</td><td>v3</td><td>register</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/attendance</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/audit_log</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/consumption</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/customer_due</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/customer_ledger</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/customer_report</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/daily_summary</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/dashboard</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/detailed_purchases</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/detailed_sales</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/expense</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/food_menu_sales</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/full_dashboard</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/inventory</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/kitchen_performance</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/low_stock</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/loyalty_points_available</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/loyalty_points_usage</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/product_analysis</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/production</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/profit_loss</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/purchases</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/purchases_by_ingredient</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/register</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/sales_by_waiter</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/sales_summary_by_date</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/sales_summary_by_month</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/supplier_due</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/supplier_ledger</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/tips</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/transfers</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/vat</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/waste</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reports"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reports/z_report</td><td>v3</td><td>reports</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="reservations"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/reservations</td><td>v3</td><td>reservations</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="roles"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/roles</td><td>v3</td><td>roles</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="roles"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/roles/permissions</td><td>v3</td><td>roles</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="sales"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/sales</td><td>v3</td><td>sales</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="sales"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/sales/details</td><td>v3</td><td>sales</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="sales"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/sales/running_details</td><td>v3</td><td>sales</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="service"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/service/companies</td><td>v3</td><td>service</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="service"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/service/company_outlets</td><td>v3</td><td>service</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="service"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/service/payments</td><td>v3</td><td>service</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="service"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/service/settings</td><td>v3</td><td>service</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="settings"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/settings/currency</td><td>v3</td><td>settings</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="settings"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/settings/tax</td><td>v3</td><td>settings</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="supplier_payments"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/supplier_payments</td><td>v3</td><td>supplier_payments</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="suppliers"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/suppliers</td><td>v3</td><td>suppliers</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="suppliers"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/suppliers/get_due</td><td>v3</td><td>suppliers</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="tables"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/tables</td><td>v3</td><td>tables</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="transfers"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/transfers</td><td>v3</td><td>transfers</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="units"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/units</td><td>v3</td><td>units</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="users"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/users</td><td>v3</td><td>users</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="waiter"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/waiter/new_orders_ajax</td><td>v3</td><td>waiter</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="waiter"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/waiter/notifications</td><td>v3</td><td>waiter</td></tr>
+          <tr data-method="GET" data-version="v3" data-group="wastes"><td><span class="badge GET">GET</span></td><td class="path">/api/v3/wastes</td><td>v3</td><td>wastes</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="areas"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/areas</td><td>v3</td><td>areas</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="attendance"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/attendance</td><td>v3</td><td>attendance</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="attendance"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/attendance/check_in</td><td>v3</td><td>attendance</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="attendance"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/attendance/check_out</td><td>v3</td><td>attendance</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="auth"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/auth/confirm_payment</td><td>v3</td><td>auth</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="auth"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/auth/customer_register</td><td>v3</td><td>auth</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="auth"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/auth/forgot_password_final</td><td>v3</td><td>auth</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="auth"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/auth/forgot_password_step1</td><td>v3</td><td>auth</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="auth"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/auth/forgot_password_step2</td><td>v3</td><td>auth</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="auth"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/auth/login</td><td>v3</td><td>auth</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="auth"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/auth/login_pin</td><td>v3</td><td>auth</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="auth"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/auth/regenerate_payment_link</td><td>v3</td><td>auth</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="auth"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/auth/register</td><td>v3</td><td>auth</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="counters"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/counters</td><td>v3</td><td>counters</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="currencies"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/currencies</td><td>v3</td><td>currencies</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="customer_due_receives"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/customer_due_receives</td><td>v3</td><td>customer_due_receives</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="customers"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/customers</td><td>v3</td><td>customers</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="delivery_partners"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/delivery_partners</td><td>v3</td><td>delivery_partners</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="denominations"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/denominations</td><td>v3</td><td>denominations</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="expense_items"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/expense_items</td><td>v3</td><td>expense_items</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="expenses"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/expenses</td><td>v3</td><td>expenses</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="food_menu_categories"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/food_menu_categories</td><td>v3</td><td>food_menu_categories</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="food_menus"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/food_menus</td><td>v3</td><td>food_menus</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="holds"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/holds</td><td>v3</td><td>holds</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="holds"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/holds/finalize</td><td>v3</td><td>holds</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="ingredient_categories"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/ingredient_categories</td><td>v3</td><td>ingredient_categories</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="ingredients"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/ingredients</td><td>v3</td><td>ingredients</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="inventory_adjustments"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/inventory_adjustments</td><td>v3</td><td>inventory_adjustments</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="kitchens"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/kitchens</td><td>v3</td><td>kitchens</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="kitchen"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/kitchen/update_status</td><td>v3</td><td>kitchen</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="modifiers"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/modifiers</td><td>v3</td><td>modifiers</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="orders"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/orders/place_order</td><td>v3</td><td>orders</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="outlets"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/outlets</td><td>v3</td><td>outlets</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="payment_methods"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/payment_methods</td><td>v3</td><td>payment_methods</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="premade_foods"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/premade_foods</td><td>v3</td><td>premade_foods</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="printers"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/printers</td><td>v3</td><td>printers</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="productions"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/productions</td><td>v3</td><td>productions</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="profile"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/profile/change_password</td><td>v3</td><td>profile</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="profile"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/profile/change_pin</td><td>v3</td><td>profile</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="profile"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/profile/security_question</td><td>v3</td><td>profile</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="promotions"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/promotions</td><td>v3</td><td>promotions</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="promotions"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/promotions/check_conflict</td><td>v3</td><td>promotions</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="purchases"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/purchases</td><td>v3</td><td>purchases</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="register"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/register/close</td><td>v3</td><td>register</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="register"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/register/open</td><td>v3</td><td>register</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="reservations"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/reservations</td><td>v3</td><td>reservations</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="roles"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/roles</td><td>v3</td><td>roles</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="sales"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/sales</td><td>v3</td><td>sales</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="sales"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/sales/merge_orders</td><td>v3</td><td>sales</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="sales"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/sales/process_refund</td><td>v3</td><td>sales</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="sales"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/sales/split_sale</td><td>v3</td><td>sales</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="service"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/service/block_company</td><td>v3</td><td>service</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="service"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/service/companies</td><td>v3</td><td>service</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="service"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/service/manual_payment</td><td>v3</td><td>service</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="service"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/service/pricing_plans</td><td>v3</td><td>service</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="service"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/service/site_settings</td><td>v3</td><td>service</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="service"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/service/unblock_company</td><td>v3</td><td>service</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="supplier_payments"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/supplier_payments</td><td>v3</td><td>supplier_payments</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="suppliers"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/suppliers</td><td>v3</td><td>suppliers</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="tables"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/tables</td><td>v3</td><td>tables</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="transfers"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/transfers</td><td>v3</td><td>transfers</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="units"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/units</td><td>v3</td><td>units</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="users"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/users</td><td>v3</td><td>users</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="waiter"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/waiter/mark_as_viewed</td><td>v3</td><td>waiter</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="waiter"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/waiter/order_details_ajax</td><td>v3</td><td>waiter</td></tr>
+          <tr data-method="POST" data-version="v3" data-group="wastes"><td><span class="badge POST">POST</span></td><td class="path">/api/v3/wastes</td><td>v3</td><td>wastes</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="areas"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/areas</td><td>v3</td><td>areas</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="attendance"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/attendance</td><td>v3</td><td>attendance</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="counters"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/counters</td><td>v3</td><td>counters</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="currencies"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/currencies</td><td>v3</td><td>currencies</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="customer_due_receives"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/customer_due_receives</td><td>v3</td><td>customer_due_receives</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="customers"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/customers</td><td>v3</td><td>customers</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="delivery_partners"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/delivery_partners</td><td>v3</td><td>delivery_partners</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="denominations"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/denominations</td><td>v3</td><td>denominations</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="expense_items"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/expense_items</td><td>v3</td><td>expense_items</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="expenses"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/expenses</td><td>v3</td><td>expenses</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="food_menu_categories"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/food_menu_categories</td><td>v3</td><td>food_menu_categories</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="food_menus"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/food_menus</td><td>v3</td><td>food_menus</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="holds"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/holds</td><td>v3</td><td>holds</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="ingredient_categories"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/ingredient_categories</td><td>v3</td><td>ingredient_categories</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="ingredients"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/ingredients</td><td>v3</td><td>ingredients</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="inventory_adjustments"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/inventory_adjustments</td><td>v3</td><td>inventory_adjustments</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="kitchens"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/kitchens</td><td>v3</td><td>kitchens</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="modifiers"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/modifiers</td><td>v3</td><td>modifiers</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="outlets"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/outlets</td><td>v3</td><td>outlets</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="payment_methods"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/payment_methods</td><td>v3</td><td>payment_methods</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="premade_foods"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/premade_foods</td><td>v3</td><td>premade_foods</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="printers"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/printers</td><td>v3</td><td>printers</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="productions"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/productions</td><td>v3</td><td>productions</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="profile"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/profile</td><td>v3</td><td>profile</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="promotions"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/promotions</td><td>v3</td><td>promotions</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="purchases"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/purchases</td><td>v3</td><td>purchases</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="reservations"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/reservations</td><td>v3</td><td>reservations</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="roles"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/roles</td><td>v3</td><td>roles</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="sales"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/sales</td><td>v3</td><td>sales</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="sales"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/sales/change_date</td><td>v3</td><td>sales</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="sales"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/sales/change_delivery_status</td><td>v3</td><td>sales</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="sales"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/sales/transfer_order</td><td>v3</td><td>sales</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="service"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/service/companies</td><td>v3</td><td>service</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="service"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/service/pricing_plans</td><td>v3</td><td>service</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="service"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/service/settings</td><td>v3</td><td>service</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="settings"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/settings/tax</td><td>v3</td><td>settings</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="supplier_payments"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/supplier_payments</td><td>v3</td><td>supplier_payments</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="suppliers"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/suppliers</td><td>v3</td><td>suppliers</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="tables"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/tables</td><td>v3</td><td>tables</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="transfers"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/transfers</td><td>v3</td><td>transfers</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="units"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/units</td><td>v3</td><td>units</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="users"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/users</td><td>v3</td><td>users</td></tr>
+          <tr data-method="PUT" data-version="v3" data-group="wastes"><td><span class="badge PUT">PUT</span></td><td class="path">/api/v3/wastes</td><td>v3</td><td>wastes</td></tr>
+        </tbody>
+      </table>
+      <p class="muted" id="counter"></p>
+    </section>
+  </div>
+  <script>
+    const q = document.getElementById('q');
+    const version = document.getElementById('version');
+    const method = document.getElementById('method');
+    const rows = Array.from(document.querySelectorAll('#rows tr'));
+    const counter = document.getElementById('counter');
+
+    function applyFilter() {
+      const qv = q.value.trim().toLowerCase();
+      const vv = version.value;
+      const mv = method.value;
+      let visible = 0;
+
+      rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        const okQ = !qv || text.includes(qv);
+        const okV = vv === 'ALL' || row.dataset.version === vv;
+        const okM = mv === 'ALL' || row.dataset.method === mv;
+        const show = okQ && okV && okM;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+
+      counter.textContent = 'Showing ' + visible + ' endpoints';
+    }
+
+    q.addEventListener('input', applyFilter);
+    version.addEventListener('change', applyFilter);
+    method.addEventListener('change', applyFilter);
+    applyFilter();
+  </script>
+</body>
+</html>

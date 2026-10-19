@@ -1,0 +1,20 @@
+# Secrets (see the matching *.example.php files)
+/application/config/database.php
+/application/config/config.php
+/application/config/stripe.php
+/application/config/paypal.php
+/application/libraries/Setupfile.php
+
+# Backups and archives
+/backup/
+/backup.tar.gz
+*.zip
+*.tar.gz
+*.sql
+
+# Runtime
+/application/logs/*
+!/application/logs/index.html
+/application/cache/*
+!/application/cache/index.html
+!/application/cache/index.php
